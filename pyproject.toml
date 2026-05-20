@@ -10,6 +10,7 @@ fastapi = ">=0.136.1,<0.137.0"
 uvicorn = ">=0.30.0,<0.31.0"
 sqlalchemy = ">=2.0.0,<3.0.0"
 psycopg2-binary = ">=2.9.0,<3.0.0"
+email-validator = ">=2.1.0,<3.0.0"
 
 
 [build-system]
