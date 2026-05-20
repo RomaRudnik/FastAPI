@@ -1,14 +1,15 @@
-[project]
+[tool.poetry]
 name = "fastapi-myproject"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "RomaRudnik",email = "r777haunt@outlook.com"}
-]
-requires-python = ">=3.14"
-dependencies = [
-    "fastapi (>=0.136.1,<0.137.0)"
-]
+authors = ["RomaRudnik <r777haunt@outlook.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+fastapi = ">=0.136.1,<0.137.0"
+uvicorn = ">=0.30.0,<0.31.0"
+sqlalchemy = ">=2.0.0,<3.0.0"
+psycopg2-binary = ">=2.9.0,<3.0.0"
 
 
 [build-system]
