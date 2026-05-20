@@ -1,0 +1,16 @@
+[project]
+name = "fastapi-myproject"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "RomaRudnik",email = "r777haunt@outlook.com"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi (>=0.136.1,<0.137.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
