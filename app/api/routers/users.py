@@ -8,7 +8,9 @@ from app.crud.users import (
     list_users,
     update_user,
 )
+from app.core.dependencies import get_current_user
 from app.db.database import get_db
+from app.db.models import User
 from app.schemas.user import UserCreate, UserOut, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -17,6 +19,11 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.get("/", response_model=list[UserOut])
 async def get_users(db: AsyncSession = Depends(get_db)):
     return await list_users(db)
+
+
+@router.get("/me", response_model=UserOut)
+async def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
 
 
 @router.get("/{user_id}", response_model=UserOut)

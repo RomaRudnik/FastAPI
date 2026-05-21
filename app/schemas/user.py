@@ -8,13 +8,14 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    pass
+    password: str
 
 
 class UserUpdate(BaseModel):
     name: str | None = None
     email: EmailStr | None = None
     age: int | None = None
+    password: str | None = None
 
 
 class UserOut(UserBase):

@@ -13,6 +13,7 @@ class User(Base):
     name: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True, index=True)
     age: Mapped[int | None]
+    password_hash: Mapped[str]
 
     profile: Mapped["Profile"] = relationship(
         back_populates="user",

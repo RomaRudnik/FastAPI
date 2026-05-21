@@ -2,6 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.security import hash_password
 from app.db.models import Category, Order, Product, Profile, User
 
 
@@ -13,8 +14,18 @@ async def seed_data(session: AsyncSession) -> None:
     except ProgrammingError:
         return
 
-    user_1 = User(name="Ivan Petrenko", email="ivan@example.com", age=22)
-    user_2 = User(name="Olena Koval", email="olena@example.com", age=25)
+    user_1 = User(
+        name="Ivan Petrenko",
+        email="ivan@example.com",
+        age=22,
+        password_hash=hash_password("password123"),
+    )
+    user_2 = User(
+        name="Olena Koval",
+        email="olena@example.com",
+        age=25,
+        password_hash=hash_password("password123"),
+    )
     profile_1 = Profile(user=user_1, bio="FastAPI student", phone="+380000000001")
     profile_2 = Profile(user=user_2, bio="Backend student", phone="+380000000002")
 

@@ -10,6 +10,11 @@ async def list_orders(db: AsyncSession) -> list[Order]:
     return result.scalars().all()
 
 
+async def list_orders_by_user(db: AsyncSession, user_id: int) -> list[Order]:
+    result = await db.execute(select(Order).where(Order.user_id == user_id))
+    return result.scalars().all()
+
+
 async def get_order(db: AsyncSession, order_id: int) -> Order | None:
     result = await db.execute(select(Order).where(Order.id == order_id))
     return result.scalar_one_or_none()
