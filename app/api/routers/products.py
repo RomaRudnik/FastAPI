@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.crud.categories import get_category
 from app.crud.products import (
     create_product,
     delete_product,
@@ -12,6 +13,28 @@ from app.db.database import get_db
 from app.schemas.product import ProductCreate, ProductOut, ProductUpdate
 
 router = APIRouter(prefix="/products", tags=["products"])
+
+
+async def require_category_for_create(
+    payload: ProductCreate,
+    db: AsyncSession = Depends(get_db),
+):
+    category = await get_category(db, payload.category_id)
+    if not category:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+    return category
+
+
+async def require_category_for_update(
+    payload: ProductUpdate,
+    db: AsyncSession = Depends(get_db),
+):
+    if payload.category_id is None:
+        return None
+    category = await get_category(db, payload.category_id)
+    if not category:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+    return category
 
 
 @router.get("/", response_model=list[ProductOut])
@@ -29,7 +52,9 @@ async def get_product_by_id(product_id: int, db: AsyncSession = Depends(get_db))
 
 @router.post("/", response_model=ProductOut, status_code=status.HTTP_201_CREATED)
 async def create_product_item(
-    payload: ProductCreate, db: AsyncSession = Depends(get_db)
+    payload: ProductCreate,
+    db: AsyncSession = Depends(get_db),
+    _category=Depends(require_category_for_create),
 ):
     return await create_product(db, payload)
 
@@ -39,6 +64,7 @@ async def update_product_item(
     product_id: int,
     payload: ProductUpdate,
     db: AsyncSession = Depends(get_db),
+    _category=Depends(require_category_for_update),
 ):
     product = await update_product(db, product_id, payload)
     if not product:
